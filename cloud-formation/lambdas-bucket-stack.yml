@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  lambdasBucket:
+    Properties:
+      BucketName: smalbert-lambdas
+    Type: "AWS::S3::Bucket"
+
+  lambdasBucketPolicy:
+    Properties:
+      Bucket: !Ref lambdasBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource: !Sub "arn:aws:s3:::${lambdasBucket}/*"
+    Type: "AWS::S3::BucketPolicy"
+Outputs:
+  AwsAccountId:
+    Value: !Ref 'AWS::AccountId'
+    Description: Account ID of the AWS account
+  AwsRegion:
+    Value: !Ref 'AWS::Region'
+    Description: Region of the AWS deployment
+  LambdasBucket:
+    Value: !Ref 'lambdasBucket'
+    Description: 'Lambdas Bucket'
+    Export:
+      Name: lambdas-bucket-name
